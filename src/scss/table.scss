@@ -8,6 +8,7 @@
     top: $header-height + $toolbar-height + $formula-height;
     overflow-x: auto;
     padding-bottom: 2px;
+    max-height: calc(100vh - $header-height - $toolbar-height - $formula-height);
 
     .row {
         display: flex;
