@@ -42,14 +42,14 @@ export class Table extends ExcelComponents {
             }
 
             const $resizer = $(event.target)
-            const $parent = $resizer.closest('[data-type="resizable"]')
-            const coords = $parent.getCoords()
+            this.$target = $resizer.closest('[data-type="resizable"]')
+            this.$targetId = this.$target.data.col
+            const coords = this.$target.getCoords()
+            // const $parent = $resizer.closest('[data-type="resizable"]')
+            // const coords = $parent.getCoords()
 
             this.startTable.x = this.$excelTable.getCoords().left
             this.startTable.y = this.$excelTable.getCoords().top
-
-            this.$target = $parent.$el
-            this.$targetId = $parent.data.col
 
             this.startCoord.y = coords.bottom
             this.startCoord.x = coords.right
@@ -67,12 +67,13 @@ export class Table extends ExcelComponents {
 
         if (this.clickStatus === 'rowDown') {
             const delta = this.endCoord.y - this.startCoord.y
-            this.$target.style.height = delta + 'px'
+            this.$target.css({height: delta + 'px'})
         }
 
         if (this.clickStatus === 'colDown') {
             this.$selectedCols.forEach((element) => {
-                element.style.width = this.endCoord.x - this.startCoord.x + 'px'
+                const delta = this.endCoord.x - this.startCoord.x
+                $(element).css({width: delta + 'px'})
             })
         }
 
@@ -82,19 +83,21 @@ export class Table extends ExcelComponents {
     onMousemove(event) {
         if (this.clickStatus === 'rowDown') {
             this.endCoord.y = event.pageY + this.height
-            this.$horizontalLine.style.top =
-                this.$excelTable.$el.scrollTop +
-                this.endCoord.y -
-                this.startTable.y -
-                this.height + 'px'
+            $(this.$horizontalLine).css({
+                top: this.$excelTable.$el.scrollTop +
+                    this.endCoord.y -
+                    this.startTable.y -
+                    this.height + 'px'
+            })
         }
 
         if (this.clickStatus === 'colDown') {
             this.endCoord.x = event.clientX + this.width
-            this.$verticalLine.style.left =
-                this.$excelTable.$el.scrollLeft +
-                this.endCoord.x -
-                this.width + 'px'
+            $(this.$verticalLine).css({
+                left: this.$excelTable.$el.scrollLeft +
+                    this.endCoord.x -
+                    this.width + 'px'
+            })
         }
     }
 }
