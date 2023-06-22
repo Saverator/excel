@@ -57,18 +57,12 @@ class Dom {
         return this.$el.querySelectorAll(selector)
     }
 
-    /* {
-        height: '20px',
-        width: '30px',
-        backgroundColor: 'red'
-    }*/
     css(styles = {}) {
-        for (const key in styles) {
-            if (Object.hasOwn(styles, key)) {
+        Object
+            .keys(styles)
+            .forEach((key) => {
                 this.$el.style[key] = styles[key]
-            }
-        }
-        return this.$el
+            })
     }
 }
 
