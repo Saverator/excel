@@ -14,6 +14,14 @@ class Dom {
         return this.$el.outerHTML.trim()
     }
 
+    text(text) {
+        if (typeof text === 'string') {
+            this.$el.textContent = text
+            return this
+        }
+        return this.$el.textContent.trim()
+    }
+
     clear() {
         this.html('')
         return this
@@ -62,9 +70,17 @@ class Dom {
     }
 
     css(styles = {}) {
+        if (typeof styles !== 'object' || styles === null) {
+            throw new Error('Invalid argument: styles must be an object');
+            }
+
         Object
             .keys(styles)
             .forEach((key) => {
+                if (typeof key !== 'string'
+                    || typeof styles[key] !== 'string') {
+                        throw new Error('Invalid style property or value');
+                        }
                 this.$el.style[key] = styles[key]
             })
     }
@@ -75,6 +91,22 @@ class Dom {
 
     removeClass(className) {
         this.$el.classList.remove(className)
+    }
+
+    id(parse) {
+        if (parse) {
+            const parsed = this.id().split(':')
+            return {
+                row: +parsed[0],
+                col: +parsed[1]
+            }
+        }
+        return this.data.id
+    }
+
+    focus() {
+        this.$el.focus()
+        return this
     }
 }
 
