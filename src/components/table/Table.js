@@ -27,15 +27,14 @@ export class Table extends ExcelComponents {
     init() {
         super.init()
 
-        const $cell = this.$root.find('[data-id="0:0"]')
-        this.selection.select($cell)
+        this.selectCell(this.$root.find('[data-id="0:0"]'))
 
         this.$on('formula:input', (text) => {
             this.selection.current.text(text)
         })
 
         this.$on('formula:enter', () => {
-            this.selection.select(this.selection.current)
+            this.selection.current.focus()
 
             const range = document.createRange();
             range.selectNodeContents(this.selection.current.$el);
@@ -44,6 +43,11 @@ export class Table extends ExcelComponents {
             sel.removeAllRanges();
             sel.addRange(range);
         })
+    }
+
+    selectCell($cell) {
+        this.selection.select($cell)
+        this.$emit('table:input', $cell.text())
     }
 
     onMousedown(event) {
@@ -57,10 +61,7 @@ export class Table extends ExcelComponents {
                     .map((id) => this.$root.find(`[data-id="${id}"]`))
                 this.selection.selectGroup($cells)
             } else {
-                this.selection.select($target)
-
-                const text = $target.text()
-                this.$emit('table:input', text)
+                this.selectCell($target)
             }
         }
     }
@@ -81,15 +82,11 @@ export class Table extends ExcelComponents {
             event.preventDefault()
             const id = nextSelector(key, this.selection.current.id(true))
             const $nextCell = this.$root.find(id)
-            this.selection.select($nextCell)
-
-            const text = $nextCell.text()
-            this.$emit('table:input', text)
+            this.selectCell($nextCell)
         }
     }
 
     onInput(event) {
-        const text = event.target.textContent.trim()
-        this.$emit('table:input', text)
+        this.$emit('table:input', $(event.target).text())
     }
 }
