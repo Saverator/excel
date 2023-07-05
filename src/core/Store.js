@@ -2,6 +2,7 @@ export class Store {
     constructor(rootReducer, initialState = {}) {
         this.state = rootReducer({...initialState}, {type: '__INIT__'})
         this.listeners = []
+        this.rootReducer = rootReducer
     }
 
     subscribe(fn) {
@@ -14,7 +15,7 @@ export class Store {
     }
 
     dispatch(action) {
-        this.state = rootReducer(this.state, action)
+        this.state = this.rootReducer(this.state, action)
         this.listeners.forEach((listener) => listener(this.state))
     }
 
