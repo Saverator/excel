@@ -8,8 +8,7 @@ export function resizeHandler($root, event) {
 
         const $resizer = $(event.target)
         const $target = $resizer.closest('[data-type="resizable"]')
-        const targetId = $target.data.col
-        const rowId = $target.data.row
+        const colId = $target.data.col
         const coords = $target.getCoords()
         let type
 
@@ -19,7 +18,7 @@ export function resizeHandler($root, event) {
         }
         const endCoord = {}
 
-        const $selectedCols = $root.findAll(`[data-col="${targetId}"]`)
+        const $selectedCols = $root.findAll(`[data-col="${colId}"]`)
 
         let clickStatus = 'up'
 
@@ -70,7 +69,7 @@ export function resizeHandler($root, event) {
             resolve({
                 value: delta,
                 type,
-                id: clickStatus === 'colDown' ? targetId : rowId
+                id: $target.data[type]
             })
 
             clickStatus = 'up'

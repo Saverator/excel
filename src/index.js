@@ -8,11 +8,12 @@ import {Table} from './components/table/Table'
 import {rootReducer} from './redux/rootReducer'
 import {Store} from './core/Store'
 import {storage} from './core/utils'
+import {initialState} from './redux/initialState'
 
 // const store = createStore(rootReducer, {
 //     tableTitle: 'My Table excel'
 // })
-const store = new Store(rootReducer, storage('excel-state'))
+const store = new Store(rootReducer, initialState)
 
 store.subscribe((state) => {
     console.log('App state: ', state)
