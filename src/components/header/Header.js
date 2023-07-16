@@ -1,4 +1,9 @@
-import {ExcelComponents} from '../../core/ExcelComponent';
+import {ExcelComponents} from '@core/ExcelComponent'
+import {$} from '@core/dom'
+import {createHeader} from './header.tamplate'
+import {changeTableName} from '@/redux/actions'
+import {defaultTableName} from '@/constants'
+import {debounce} from '@core/utils'
 
 export class Header extends ExcelComponents {
     static className = 'excel__header'
@@ -6,29 +11,22 @@ export class Header extends ExcelComponents {
     constructor($root, options) {
         super($root, {
             name: 'Header',
+            listeners: ['input'],
             ...options
         })
     }
 
+    prepare() {
+        this.onInput = debounce(this.onInput, 300)
+    }
+
     toHTML() {
-        return `
-            <input class="input" type="text" value="Новая таблица" />
+        const tableName = this.store.getState().tableName || defaultTableName
+        return createHeader(tableName)
+    }
 
-            <div>
-
-                <div class="button">
-                    <span class="material-symbols-outlined">
-                        delete
-                    </span>
-                </div>
-
-                <div class="button">
-                    <span class="material-symbols-outlined">
-                        exit_to_app
-                    </span>
-                </div>
-
-            </div>
-        `
+    onInput(event) {
+        const $target = $(event.target)
+        this.$dispatch(changeTableName($target.text()))
     }
 }
