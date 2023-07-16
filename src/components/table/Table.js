@@ -5,6 +5,8 @@ import {resizeHandler} from './table.resize'
 import {createTable} from './table.template'
 import {$} from '@core/dom'
 import * as actions from '@/redux/actions'
+import {defaultStyles} from '@/constants'
+import {parse} from '@core/parse'
 
 export class Table extends ExcelComponents {
     static className = 'excel__table'
@@ -31,7 +33,9 @@ export class Table extends ExcelComponents {
         this.selectCell(this.$root.find('[data-id="0:0"]'))
 
         this.$on('formula:input', (text) => {
-            this.selection.current.text(text)
+            this.selection.current
+                .attr('data-value', text)
+                .text(parse(text))
             this.updateTextInStore(text)
         })
 
@@ -45,11 +49,21 @@ export class Table extends ExcelComponents {
             sel.removeAllRanges();
             sel.addRange(range);
         })
+
+        this.$on('toolbar:applyStyle', (value) => {
+            this.selection.applyStyle(value)
+            this.$dispatch(actions.applyStyle({
+                value,
+                ids: this.selection.selectedIds
+            }))
+        })
     }
 
     selectCell($cell) {
         this.selection.select($cell)
-        this.$emit('table:select', $cell.text())
+        this.$emit('table:select', $cell)
+        const styles = $cell.getStyles(Object.keys(defaultStyles))
+        this.$dispatch(actions.changeStyles(styles))
     }
 
     async resizeTable(event) {
@@ -105,6 +119,8 @@ export class Table extends ExcelComponents {
     }
 
     onInput(event) {
-        this.updateTextInStore($(event.target).text())
+        const $target = $(event.target)
+        this.updateTextInStore($target.text())
+        $target.data.value = $target.text()
     }
 }
