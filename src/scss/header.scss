@@ -36,4 +36,8 @@
     & .button {
         @include button();
     }
+
+    a {
+        text-decoration: none;
+    }
 }

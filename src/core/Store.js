@@ -7,10 +7,13 @@ export class Store {
 
     subscribe(fn) {
         this.listeners.push(fn)
+
+        const unsubscribe = () => {
+            this.listeners = this.listeners.filter((l) => l !== fn)
+        }
+
         return {
-            unsubscribe() {
-                this.listeners = this.listeners.filter((l) => l !== fn)
-            }
+            unsubscribe
         }
     }
 
