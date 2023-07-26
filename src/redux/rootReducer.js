@@ -3,7 +3,8 @@ import {
     CHANGE_TEXT,
     CHANGE_STYLES,
     APPLY_STYLE,
-    CHANGE_TABLE_NAME
+    CHANGE_TABLE_NAME,
+    UPDATE_DATE
 } from './types'
 
 // Pure function
@@ -39,6 +40,11 @@ export function rootReducer(state, action) {
             return {
                 ...state,
                 tableName: action.data,
+            }
+        case UPDATE_DATE:
+            return {
+                ...state,
+                dateOpen: new Date().toJSON()
             }
         default: return state
     }

@@ -9,7 +9,7 @@ export function createHeader(tableName) {
 
         <div>
 
-            <div class="button">
+            <div class="button" data-type="delete-button">
                 <span
                     class="material-symbols-outlined"
                     data-type="delete-button"
@@ -18,7 +18,7 @@ export function createHeader(tableName) {
                 </span>
             </div>
 
-            <div class="button">
+            <div class="button" data-type="exit-button">
                 <span
                     class="material-symbols-outlined"
                     data-type="exit-button"

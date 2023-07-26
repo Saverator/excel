@@ -32,12 +32,16 @@ export class Header extends ExcelComponents {
     }
 
     onClick(event) {
-        if (event.target.dataset.type === 'delete-button') {
-            const key = ActiveRoute.path.split('/').join(':')
-            localStorage.removeItem(key);
-            window.location.replace('/')
-        } else if (event.target.dataset.type === 'exit-button') {
-            window.location.replace('/')
+        const $target = $(event.target)
+
+        if ($target.data.type === 'delete-button') {
+            const decision = confirm('Удалить таблицу?')
+            if (decision) {
+                localStorage.removeItem('excel:' + ActiveRoute.param)
+                ActiveRoute.navigate('')
+            }
+        } else if ($target.data.type === 'exit-button') {
+            ActiveRoute.navigate('')
         }
     }
 }

@@ -1,18 +1,16 @@
+import {storage} from '@core/utils'
+
 function toHTML(key) {
-    const storage = JSON.parse(localStorage[key])
-    const title = storage.tableName
+    const model = storage(key)
     const link = '#' + key.split(':').join('/')
-    const date = new Date(+key.split(':')[1])
-    const currentDate = date.getUTCDate()
-            + '/'
-            + (date.getUTCMonth() + 1)
-            + '/'
-            + date.getUTCFullYear()
+    const date = new Date(model.dateOpen).toLocaleDateString()
+        + ' '
+        + new Date(model.dateOpen).toLocaleTimeString()
 
     return `
         <li class="db__record">
-            <a href="${link}">${title}</a>
-            <strong>${currentDate}</strong>
+            <a href="${link}">${model.tableName}</a>
+            <strong>${date}</strong>
         </li>
     `
 }
