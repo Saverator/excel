@@ -58,6 +58,14 @@ export function createToolbar(state) {
                 ? 'none'
                 : 'underline'
             }
+        },
+        {
+            icon: 'format_strikethrough',
+            active: state['textDecoration'] === 'line-through',
+            value: {textDecoration: state['textDecoration'] === 'line-through'
+                ? 'none'
+                : 'line-through'
+            }
         }
     ]
 

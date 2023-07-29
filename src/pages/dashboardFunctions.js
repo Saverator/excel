@@ -31,7 +31,6 @@ function getAllKeys() {
 
  export function createRecordsTable() {
     const keys = getAllKeys()
-    console.log(keys)
 
     if (!keys.length) {
         return `<p>Не создано ни одной таблицы</p>`
