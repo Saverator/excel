@@ -1,5 +1,5 @@
 import {Page} from '@core/Page'
-import {Store} from '@core/Store'
+import {Store} from '@core/store/Store'
 import {Excel} from '@/components/excel/Excel'
 import {Header} from '@/components/header/Header'
 import {Toolbar} from '@/components/toolbar/Toolbar'
